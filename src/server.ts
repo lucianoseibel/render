@@ -12,7 +12,7 @@ app.get('/users', async () => {
     return {users}
 })
 
-app.post('/users',  (request, reply) => {
+app.post('/users', async (request, response) => {
 
     const createdUserSchema = z.object({
         name: z.string(),
@@ -21,14 +21,21 @@ app.post('/users',  (request, reply) => {
 
     const { name, email} = createdUserSchema.parse(request.body)
 
-     prisma.user.create({
+    console.log(request.body)
+    console.log(name,email)
+
+    await prisma.user.create({
         data: {
             name,
             email,
         }
     })
 
-    return reply.status(201)
+    console.log('after')
+
+    response.status(201)
+
+    console.log('final')
 })
 
 app.listen({

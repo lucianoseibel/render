@@ -1,7 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import fastify from "fastify";
-import { availableParallelism } from "os";
-import { REPL_MODE_SLOPPY } from "repl";
 import { z } from "zod";
 
 const app = fastify()
@@ -14,7 +12,7 @@ app.get('/users', async () => {
     return {users}
 })
 
-app.post('/users', async (request, reply) => {
+app.post('/users',  (request, reply) => {
 
     const createdUserSchema = z.object({
         name: z.string(),
@@ -23,7 +21,7 @@ app.post('/users', async (request, reply) => {
 
     const { name, email} = createdUserSchema.parse(request.body)
 
-    await prisma.user.create({
+     prisma.user.create({
         data: {
             name,
             email,
